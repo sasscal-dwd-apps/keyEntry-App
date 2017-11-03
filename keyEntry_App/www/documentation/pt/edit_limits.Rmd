@@ -1,0 +1,21 @@
+<a name="edit_limits"></a>
+
+# Edição de Limites e Factores de Escala
+
+## Limites
+Esta guia mostra os valores máximos e mínimos que são aceitos ao inserir dados. Os limites são definidos para cada elemento independentemente e podem ser modificados pelo usuário (veja a Figura 3). Para isso, basta alterar os valores do `maxValue` e  `minValue`.
+
+Para tornar as mudanças efetivas, o usuário terá que pressionar o botão Create. **Essas alterações são aplicadas somente no formulário atual**. Isso significa que os novos formulários permanecerão com os limites do padrão. Se o usuário quiser modificar os limites para cada formulário, as mudanças devem ser feitas no modelo de formulário (consulte a Seção ['Modelo de formulário'](#create_new_form_template) para obter mais detalhes).
+
+Se o usuário insere um valor além dos limites definidos na tabela `Edição de Limites`, a célula ficará vermelha. Desta forma, o usuário estará ciente de que o valor não satisfaz o controle do limite absoluto. É o usuário o que tem que decidir se o valor está realmente correto ou não. Caso contrário, o valor corrigido deve ser inserido. Se estiver correto, recomenda-se que o usuário adapte os limites desse valor.
+
+## Factores de Escala
+O fator de escala refere-se a um multiplicador que deve ser aplicado ao valor inserido para obter o valor final observado correto.
+
+**Exemplo:** é usual inserir valores de temperatura sem separadores decimais. Isto significa que o usuário entra a uma temperatura de 25,7 C como 257. Para recuperar o valor observado correto (25,7), precisamos multiplicar o valor inserido por `0,1`. Este valor `0,1` é o _factor de escala_ da temperatura.
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "limits_example.PNG"))
+```
+<center>Figura 4. Exemplo de Limites e fatores de escala</center><br>
+

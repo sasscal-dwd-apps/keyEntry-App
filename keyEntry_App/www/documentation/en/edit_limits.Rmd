@@ -1,0 +1,20 @@
+<a name="edit_limits"></a>
+
+# Edit limits and scale factors
+
+## Limits
+This tab shows the maximum and minimum values that are accepted when entering data. The limits are defined for each element independently and can be modified by the user (see Figure 3). To do so, it is enough to change the values of the `maxValue` and `minValue`. 
+
+To make the changes effective, the user will have to press the button `Create`. **This changes are only applied to the current form**. This means that new forms will remain with the default limits. If the user wants to modify the limits for every form, then the changes should be done in the form template (see Section ['Form Template'](#create_new_form_template) for more details).
+
+If the user enters a value beyond the limits defined in the `Edit limits` tab, then the cell will turn red. In this way the user will be aware that the value does not satisfy the absolute limit control. It is the user the one that has to decide whether the value is actually correct or not. If not, the corrected value should be entered. If it is correct, it is recommended that the user adapts the limits to that value.
+
+## Scale factors
+The scale factor refers to a multiplicator that has to be applied to the entered value so that you get a correct end observed value.
+
+**Example:** it is usual to enter temperature values without decimal separators. This means, that the user enters a temperature of 25.7 C as 257. To retrieve the correct observed value (25.7) we would need to multiply the entered value by `0.1`. This `0.1` value is the _scale factor_ of temperature.
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "limits_example.PNG"))
+```
+<center>Figure 4. Example of Limits and scale factors</center><br>

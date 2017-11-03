@@ -1,0 +1,60 @@
+# Instalação e desinstalação
+
+> _**Nota:** Execute a instalação como **Administrador**._
+
+## Instalação
+
+O aplicativo é armazenado como um arquivo `.zip` para reduzir o tamanho do mesmo. Existem dois arquivos `.zip` diferentes disponíveis:
+
+* `keyEntry_compact_small.zip` (aprox. 9 Mb): Contém as informações mínimas para instalar o aplicativo. O **usuário precisará de conexão a Internet para completar a instalação**, uma vez que o aplicativo terá que baixar o R-Packages de um repositório R-CRAN (geralmente o repositório: <http://cran.us.r-project.org>) e o Software necessário (ou seja, Pandoc)
+
+* `keyEntry_compact_large.zip` (aprox. 49 Mb): Contém todos os R-Pacotes e software necessários para a instalação da aplicação. O **usuário não precisará de conexão a Internet**.
+
+Para prosseguir com a instalação, o usuário deve seguir estes passos:
+
+1. **Descompactação do arquivo**: O usuário tem que descompactar o arquivo `keyEntry_compact_small.zip` ou `keyEntry_compact_large.zip` e colocar o conteúdo em qualquer pasta (por exemplo Desktop, Documentsou qualquer outro).
+
+2. **Abrir a pasta KeyEntry_standalone**: Esta pasta contém todos os arquivos para instalar e executar o aplicativo.
+
+3. **Editar o arquivo keyEntry.bat**: Clique com o botão direito do mouse nesse arquivo e selecione `Edit`. Um editor abrirá o arquivo `.bat` e o usuário terá que modificar o caminho onde `R` está localizado. O caminho padrão é:
+    ```{r, echo=FALSE}
+cat(file.path("C:", "Program Files", "R", "R-3.2.1", "bin", "i386"))
+```
+
+    Onde `R-3.2.1` é a versão de `R`, and `i386` contém a versão `32bit` de `R`.
+     Uma vez que as alterações foram feitas, salve as alterações e feche o Editor.
+
+4. **Execute keyEntry.bat**: Clique duas vezes no arquivo. Uma janela de comando será exibida.
+
+5. **Selecione Serviço Meteorológico**: O usuário será solicitado a digitar o serviço meteorológico (`DMS`, `INAMET` ou `ZMD`). Esta informação deve ser inserida apenas uma vez: durante o processo de instalação.
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "select_metService.png"))
+```
+<center>Figure 1. Select the Meteorological Service</center><br>
+
+6. **Baixada dos pacotes:** se o usuário usar o arquivo `keyEntry_compact_small.zip`, o aplicativo baixará automaticamente os R-Packages necessários de um repositório R-CRAN. Caso contrário, o aplicativo conterá já os pacotes necessários. Os pacotes serão salvos em:
+
+    ```{r, echo=FALSE}
+cat(RpkgsDir)
+```
+
+    > _**Nota:** Este passo pode demorar alguns minutos. Por favor, seja paciente._
+
+7. **Instalação das bibliotecas:** Uma vez que os pacotes são salvos localmente, o aplicativo procederá a descompactar e instalar os pacotes como bibliotecas. Essas bibliotecas estarão localizadas em:
+    
+    ```{r, echo=FALSE}
+cat(RlibsDir)
+```
+
+    > _**Nota:** Este passo pode demorar alguns minutos. Por favor, seja paciente._
+
+8. **Baixada e instalação de Pandoc:** Se não estiver disponível na pasta `keyEntry_standalone` folder,  o arquivo instalador de `Pandoc` será baixado da Internet. Uma vez que o arquivo do instalador esteja disponível, ele será executado automaticamente para que o assistente de instalação apareça. O usuário terá que seguir as etapas do assistente.
+
+Uma vez que o processo de instalação está concluído, o  `keyEntry-App` abrir-se-á automaticamente.
+
+O aplicativo pode ser interrompido a qualquer momento ao fechar a janela de comando. Para voltar a executar o aplicativo, execute o arquivo `keyEntry_App.bat` novamente. 
+
+##  Desinstalação
+
+Para desinstalar o aplicativo, basta remover a pasta `keyEntry_standalone`.

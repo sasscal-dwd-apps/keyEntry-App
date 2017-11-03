@@ -1,0 +1,47 @@
+<a name="keyEntry"></a>
+
+# Formulário
+
+O Formulário contém uma tabela na qual o usuário pode realmente inserir os dados (veja a Figura 3). A estrutura desta tabela é definida anteriormente em um arquivo do Excel, mas é baseada na estrutura do formulário no papel original (veja a Seção ['Criar Modelo'](#create_new_template)  para mais detalhes).
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "form_example.png"))
+```
+<center>Figura 3. Exemplo de um formulário de entrada de chave</center><br>
+
+<a name="save_data"></a>
+
+## Guardar dados
+Os dados inseridos são salvos automaticamente toda vez que o usuário entra um novo valor. Isso garante que os dados não serão perdidos se, por exemplo, o usuário fechar o navegador acidentalmente ou se o computador desligar inesperadamente.
+
+Alternativamente, o usuário pode salvar os dados manualmente pressionando o botão `Salvar dados`. Em seguida, um arquivo Excel (  `.xls`) com os dados será criado e salvo no caminho seguinte:
+
+```{r, echo = FALSE}
+cat(file.path("keyEntry_standalone", "keyEntry_App", "www", "tmp_files"))
+```
+
+As informações contidas no `.xls` arquivo são divididas em quatro folias:
+
+* **metadata:** contendo as informações relacionadas com os metadados, como o ID da estação, nome do formulário, pessoa de contato ou data quando o arquivo foi criado
+
+* **data:** contendo os dados inseridos pelo usuário
+
+* **limits:** contendo os limites aplicados ao formulário e o fator de escala de cada elemento que está disponível no formulário
+* **climsoft:** contendo relacionado ao CLIMSOFT (isto é, abreviatura de elemento, unidades, período de tempo, código de elemento, etc.). **Esta folia é essencial para depois importar os dados para CLIMSOFT com sucesso**
+
+> _**Nota:** Recomenda-se que o usuário aperte o Save databotão depois que um formulário for concluído._
+
+## Baixar os dados
+
+Para baixar os dados inseridos, o usuário tem duas opções:
+
+* Baixar como `.csv`: O usuário obterá os dados em um arquivo separado por vírgulas. Só obterá os dados. Metadados e limites são ignorados. 
+* Baixe como `.xls`: O usuário receberá os metadados, dados e limites em um arquivo do Excel. A estrutura deste arquivo é a mesma que a descrita acima (see ['Guardar dados'](#save_data))
+
+## Enviar os dados por E-Mail
+
+O usuário também pode enviar os dados por E-Mail. Se o usuário selecionar esta opção pressionando o botão `Enviar dados por E-Mail`, uma nova janela será exibida. A nova janela espera que o usuário selecione uma conta de E-Mail a partir da qual os dados podem ser enviados e outra conta de E-mail para a qual enviar o E-mail. A senha do remetente é necessária para enviar os dados com sucesso.
+
+O e-mail será gerado automaticamente e conterá os dados em duas formas: como um `.csv` arquivo e como um `.xls` arquivo.
+
+> _**Nota:**  O endereço de E-Mail do remetente deve ser uma Conta  do **GMAIL**. Essa conta precisa ser configurada para permitir que  'aplicativos menos seguros acessem sua conta' (veja <https://support.google.com/accounts/answer/6010255?hl=pt_BR> para obter mais detalhes)_

@@ -1,0 +1,37 @@
+# Execução do Aplicativo
+
+Para executar o aplicativo, basta clicar duas vezes no arquivo `KeyEntry.bat`. Após alguns segundos, um navegador da Web é aberto. A interface KeyEntry-App aparece diretamente no navegador Web.
+
+> _**NOTA IMPORTANTE**_
+>
+> _Se mais de um usuário irá trabalhar com o App, ao mesmo tempo, recomenda-se para criar sessões diferentes, um para cada usuário. Para fazer isso, você deve modificar uma linha de comando no arquivo `keyEntry.bat`._
+>
+> _Onde diz `set users = 1`, substitua o número` 1` pelo número de usuários que serão conectados ao aplicativo (veja a Figura 2)._
+>
+> _Cada sessão terá um número de porta diferente (`30XX`) onde` XX` é o número de usuário. Por exemplo, se `users` estiver configurado para` 10`, haverá dez portas disponíveis (de `3001` a` 3010`). O número máximo de usuários é `99`._
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "set_users.PNG"))
+```
+<center>Figura 2. Configurar o número de usuários que vão trabalhar com a aplicação</center><br>
+
+Uma vez que o usuário está no navegador da Web, terá que selecionar o formulário em que os dados devem ser introduzidos. Depois de selecionar o formulário, novos campos são exibidos para completar a entrada de metadados adicionais, como identificação da estação, data ou nome da pessoa que está inserindo os dados. Uma vez preenchidos todos os campos, el botão `Criar` aparece. 
+
+Uma vez que o usuário pressiona `Criar`, duas guias aparecem:
+
+* **Formulário:** Contendo o formulário de entrada de chave real
+* **Limites e Factores de Escala:** Contendo os limites mínimos e máximos aceitos pela aplicação, bem como o fator de escala de cada elemento
+
+Nas seções a seguir, ambas optões serão explicadas mais detalhadamente.
+
+> _**Nota:** O `keyEntry-App` também pode ser acessado a partir de outros computadores conectados à Intranet. Para acessar o aplicativo a partir de outro PC, abra um navegador (por exemplo, Mozilla) e digite o seguinte endereço IP:_
+
+```{r, echo = FALSE}
+x <- system("ipconfig", intern=TRUE)
+z <- x[grep("IPv4", x)]
+ip <- gsub(".*? ([[:digit:]])", "\\1", z)
+
+cat(paste0("http://",ip, ":30XX"))
+```
+
+> _onde `30XX` é o número da porta e` XX` refere-se ao número do usuário._

@@ -1,0 +1,111 @@
+<a name="form_template"></a>
+
+# Excel form template 
+
+The structure of the forms has been developed based on the original on-paper documents, so that they look as similar as possible to the original forms. This structure is defined in an Excel file (`.xls`) which name matches the name of the original Form (e.g. `MOZ304A.xlsx` contains the structure information of the form `MOZ304A` of ZMD). 
+
+Each `.xls` file includes the description of the elements to be entered in the form, as well as the main inputs needed to create the form, such as `station_id` or `date`. This information is stored in `Worksheets`, each of which is described in the following.
+
+## Inputs Worksheet
+`inputs` is here understood as the metadata that define the key entry form, such as station id, station name, date or person that complements the Form. These `inputs` are actually the fields the user has to fill in before a new Form can be created (see Figure 5).
+
+<a name="figure4"></a>
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "form_inputs_web.png"))
+```
+<center>Figure 5. Example of `inputs` in the App (MOZ304A, ZMD)</center><br>
+
+The `inputs` may vary from one form to another, and therefore the user has to be able to modify or create their own `inputs` based on their own on-paper forms.
+
+To facilitate this, the `.xls` file that defines the structure of a given form (e.g. MOZ304A, ZMD) includes a Worksheet named `inputs` in which the input fields are described (Figure 6).  
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "form_inputs.png"))
+```
+<center>Figure 6. Example of `inputs` Worksheet (MOZ304A, ZMD)</center><br>
+
+This Worksheet contains the following information:
+
+* _code_*: Identifier of the inputs. 
+* _input_*: Name of the inputs. This name will be used to label the field box in the `keyEntry-App` (see [Figure 4](#figure4)).
+* _description_: Brief description of the input.
+* _character_limits_: How many characters should have the input.
+* _width_*: Width of the field box to appear in the KeyEntry App, in pixels.
+
+> _**Note:** The fields marked with `*` are mandatory._
+
+The user can add as many inputs as desired, but it is recommended to enter only those that are required for the on-paper form, so that the form remains similar to the original on-paper document.
+
+To avoid mistakes when typing text in these fields, the user can also define the accepted values for each `input` in a separate Worksheet. For instance, if one of the input fields is `year`, then the user can create a Worksheet called `year` in which the years are defined. Then the user will have to select one year instead of typing the date him-/herself. This should avoid inconsistencies in the date format.
+
+> _**Note:** It is mandatory that **the user calls the Worksheet with the same 
+name as the input**, so that the App can recognize the Worksheet as additional 
+input information. Otherwise the App will ignore the Worksheet_
+
+## Elements worksheet
+
+Similarly as with the `inputs`, the elements that appear in the key entry form should be defined in the `.xls` file. There is a Worksheet called `elements` that should contain all the information related to the elements. Figure 7 shows an example of the `elements` Worksheet. These elements are those contained in the `MOZ304A` form. 
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "form_elements.png"))
+```
+<center>Figure 7. Example of `elements` Worksheet (`MOZ304A`)</center><br>
+
+This Worksheet contains the following information:
+
+* _element_type_: Type of element (e.g. `temperature`, `pressure`, `windspeed`, etc.).
+* _element_abbr_*: Abbreviation of the element. This column will be used as headers for the form. It is recommended that it contains the same names as those used in the on-paper form
+* _element_name_: Complete name of the Elements
+* _description_: Description of the Element
+* _climsoft_code_: Element code used in Climsoft to identify the element. This code can be found in the `obs_element` table of the `MS-Access` Climsoft database, or in the `obsElement` table of the `mariadb` Climsoft database. The _climsoft_code_ will be used to transfer the data from the key-entry Form into a Climsoft db
+* _maximum_: Maximum value accepted for a given element. It is used to carry out the `absolute limit check` when typing the data. If emtpy, the App will not be able to check if the values entered are above this limit
+* _minimum_: Minimum value accepted for a given element. It is used to carry out the `absolute limit check` when typing the data. If emtpy, the App will not be able to check if the values entered are below this limit
+* _units_: Units of the element
+* _rule_: A numeric value indicating that the element is calculated based on another elements of the form. The number is only an identifier to know which rule has to be applied in order to calculate the value. Please, check the Section [Rules definition rules](#defining_rules) for more details
+* _time_period_*: Whether the element is a `daily`, `subdaily`, `yearly` or `subyearly` value. This information will be usefull for transfering the data into a Climsoft db
+* _time_: If the time-period is "subdaily", then it is required to specify the exact time in which the measurement was done
+
+> _**Note:** The fields marked with `*` are mandatory._
+
+<a name="defining_rules"></a>
+
+## Rules definition
+The `rules` define how to calculate a value of an element based on other elements of the Form. The calculated values will appear in the Form automatically, and the user cannot overwrite it. This is to ensure that the calculated values cannot be modified manually.
+
+If the calculated values are wrong, then the user will have to check the values of the other elements that have been used to make the calculation.
+
+The rules are defined previously by the user in the form template. Each rule will have its own Worksheet in the `.xls` file, and the name of that worksheet has to be as follows:
+
+    _ruleX_description_
+
+where _X_ is a numeric value indicating the _rule_id_, and the _description_ a brief description of the element to calculate. For instance, _rule1_mean_temp_ refers to the first rule (Rule Nr. _1_), which is defined to calculate the _mean temperature_.
+
+Currently, there are three different type of rules available:
+
+* _mean_: Calculates the mean value from two elements (Figure 8)
+    
+    ```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "form_rule_mean.png"))
+```
+<center>Figure 8. Calculation of Mean Temperature based on the minimum and maximum temperatures </center><br>
+
+* _diff_: Calculates the difference between two elements (Figure 9)
+
+    ```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "form_rule_diff.png"))
+```
+<center>Figure 8. Calculation of wind speed difference between wind speed at 17 UTC and 06 UTC. </center><br>
+
+* _between_: Given a value, it will be checked against a table (called `between_table`) to know whether the value is between a certain range of values. If so, the final calculated value will be a value defined in that table. The `between_table` should contain the `min` and `max` values of each range, and another column with the equivalent value which will be used as `calculated value` in the end. Figure 10 shows an example of the `between` rule
+    
+    ```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "form_rule_between.png"))
+``` 
+<center>Figure 10. Calculation of 24h mean wind speed (`24Hr. WIND Mean`) based on the wind difference element (`24Hr. Wind Diff`) </center><br>
+
+In all cases, the `rule` Worksheets should contain, at least, the following information:
+
+* _rule_id_: number of the rule. The number has to be unique, and has to match the number used in the `element` Worksheet in the `rule` column to define the element of interest.
+* _element_name_: Abbreviation of the element that wants to be calculated. It has to match the abbrevation used in the `element` Worksheet. 
+* _formula_: Type of formula used to make the calculation (`mean`, `diff`, or `between`)

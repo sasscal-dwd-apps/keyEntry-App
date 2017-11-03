@@ -1,0 +1,38 @@
+# Running the App
+
+To run the application, just double click on the file `KeyEntry.bat`. After a few seconds, a web browser opens. The KeyEntry-App interface appears directly on the web-browser. 
+
+
+> _**IMPORTANT NOTE**_ 
+>
+> _If more than one user will work with the App at the same time, it is recommended to create different sessions, one for each user. To do so, you have to modify one command line in the `keyEntry.bat` file._
+>
+> _Where it says `set users=1`, replace the number `1` with the number of users that are going to be connect to the App (see Figure 2)._
+>
+> _Each session will have a different port number (`30XX`) where `XX` is the user number. For instance, if `users` is set to `10`, then there will be ten ports available (from `3001` to `3010`). Maximum number of users is `99`._
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "set_users.PNG"))
+```
+<center>Figure 2. Set up the number of users that are going to work with the App</center><br>
+
+Once the user is in the Web-browser, he/she will have to select the form in which the data has to be key entered. After selecting the form, new fields pops up to complete the entry of additional metadata, such as station id, date or name of the person that is entering the data. Once all the fields are filled in, a `Create` button appears. 
+
+Once the user press `Create`, two tabs appear:
+
+* **Key Entry Form:** Containing the actual key entry form
+* **Limits & Scale Factors:** Containing the minimum and maximum limits accepted by the App, as well as the scale factor of each element
+
+In the following sections both tabs will be explained more in detail.
+
+> _**Note:** The `keyEntry-App` can also be accessed from other computers connected to the Intranet. To access to the App from another PC, open a browser (e.g. Mozilla) and type the following IP-address:_
+
+```{r, echo = FALSE}
+x <- system("ipconfig", intern=TRUE)
+z <- x[grep("IPv4", x)]
+ip <- gsub(".*? ([[:digit:]])", "\\1", z)
+
+cat(paste0("http://",ip, ":30XX"))
+```
+
+> _where `30XX` is the port number and `XX` refers to the user number._

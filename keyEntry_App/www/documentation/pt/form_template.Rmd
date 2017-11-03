@@ -1,0 +1,109 @@
+<a name="form_template"></a>
+
+# Modelo de formulario de Excel
+
+A estrutura dos formulários foi desenvolvida com base nos documentos originais no papel, para que eles pareçam tão parecidos quanto possível com os formulários originais. Essa estrutura é definida em um arquivo Excel (`.xls`) cujo nome corresponde ao nome do formulário original (por exemplo, o arquivo `MOZ304A.xlsx` contém as informações de estrutura do formulário `MOZ304A` de ZMD).
+
+Cada arquivo `.xls` inclui a descrição dos elementos a serem inseridos no formulário, bem como as principais entradas necessárias para criar o formulário, como `station_id` ou `date`. Esta informação é armazenada em `planilhas` (`Worksheets`), cada uma das quais é descrita a seguir.
+
+## Folha 'Inputs'
+`inputs` é aqui entendido como os metadados que definem o formulário de entrada de chave, como o ID da estação, o nome da estação, a data ou a pessoa que complementa o Formulário. Estes inputssão realmente os campos que o usuário deve preencher antes de criar um novo formulário (veja a Figura 5).
+
+<a name="figure4"></a>
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "form_inputs_web.png"))
+```
+<center>Figura 5. Exemplo da folha `inputs` no aplicativo (exemplo de MOZ304A, ZMD)</center><br>
+
+O `inputs` pode variar de um formulário para outro e, portanto, o usuário deve ser capaz de modificar ou criar a sua própria folha de `inputs` baseando-se em seus próprios formulários em papel.
+
+Para facilitar isso, o arquivo `.xls` que define a estrutura de um determinado formulário (por exemplo, MOZ304A, ZMD) inclui uma folha denominada `inputs` em que os campos de entrada são descritos (Figura 6).
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "form_inputs.png"))
+```
+<center>Figura 6. Exemplo de `inputs` folha (MOZ304A, ZMD) (MOZ304A, ZMD)</center><br>
+
+Esta folha contém as seguintes informações:
+
+* _code_*: Identificador das entradas.
+* _input_*: Nome dos inputs. Este nome será usado para rotular a caixa de campo no `keyEntry-App` (veja a [Figura 4](#figure4)).
+* _description_: Breve descrição da entrada.
+* _character_limits_: quantos caracteres devem ter cada input.
+* _width_*: tamanho da caixa de campo para aparecer na aplicação (em pixels).
+
+> _**Nota:** Os campos marcados com `*` são obrigatórios._
+
+O usuário pode adicionar tantas entradas como desejado, mas é recomendável inserir apenas aqueles que são necessários para o formulário no papel, de modo que o formulário permaneça semelhante ao documento original em papel.
+
+Para evitar erros ao digitar texto nesses campos, o usuário também pode definir os valores aceitos para cada `input` um em uma folha separada. Por exemplo, se um dos campos de entrada for `ano`, o usuário pode criar uma Planilha chamada `ano` em que os anos são definidos . Então, o usuário terá que selecionar um ano em vez de digitar a data ele mesmo. Isso deve evitar inconsistências no formato da data.
+
+É importante que **o usuário chame a folha com o mesmo nome que o input**, para que o aplicativo possa reconhecer a planilha como informação adicional do input. En caso contrário, o aplicativo ignorará a planilha.
+
+## Folha 'Elementos' 
+
+Da mesma forma que com o `inputs`, os elementos que aparecem no formulário online debem ser definidos no arquivo `.xls`. Há uma folha chamada `elements` que deve conter todas as informações relacionadas aos elementos. A Figura 6 mostra um exemplo da Planilha `elements`. Esses elementos são aqueles contidos no formulário `MOZ304A`.
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "form_elements.png"))
+```
+<center>Figura 7. Exemplo de folha `elements`  (`MOZ304A`)</center><br>
+
+Esta folha contém as seguintes informações:
+
+* _element_type_: Tipo de elemento (por exemplo `temperature`, `pressure`, `windspeed`, etc.).
+* _element_abbr_*: Abreviação do elemento. Esta coluna será usada como cabeçalho para o formulário. Recomenda-se que contenha os mesmos nomes que os usados no formulário em papel
+* _element_name_: Nome completo dos elementos
+* _description_: Descrição do Elemento
+* _climsoft_code_: Código de elemento usado no Climsoft para identificar o elemento. Este código pode ser encontrado na tabela `obs_element` do banco de dados de `MS-Access` do Climsoft, ou na tabela `obsElement` do banco de dados `mariadb` do Climsoft. O código climsoft será usado para transferir os dados do formulário na base de dados de  Climsoft
+* _maximum_: Valor máximo aceito para um determinado elemento. Ele é usado para verificar se os valores digitalizados estão fora do limite máximo. Se estiver vazio, o aplicativo não poderá verificar se os valores inseridos estão acima deste limite
+* _minimum_: Valor mínimo aceito para um determinado elemento. Ele é usado para verificar se os valores digitalizados estão fora do limite mínimo. Se estiver vazio, o aplicativo não poderá verificar se os valores inseridos estão abaixo deste limite
+* _units_: unidades do elemento
+* _rule_: Um valor numérico que indica que o elemento é calculado com base em outros elementos do formulário. O número é apenas um identificador para saber qual regra deve ser aplicada para calcular o valor. Por favor, verifique as regras na Seção: [Definição de regras](#defining_rules) para mais detalhes
+* _time_period_*: se o elemento tem um valor diário (`daily`), sub-diário (`subdaily`),  anual (`yearly`) ou sub-anual (`subyearly`). Esta informação será útil para transferir os dados para uma base de dados de Climsoft
+* _time_: Se o período de tempo for "subdaily", é necessário especificar a hora exata em que a medida foi feita
+
+> _**Nota:** Os campos marcados com `*` são obrigatórios._
+
+<a name="defining_rules"></a>
+
+## Definição de regras
+As regras (`rules`) definem a forma de calcular um valor de um elemento com base em outros elementos do formulario. Os valores calculados aparecerão no Formulário automaticamente, e o usuário não poderá substituí-lo. Isto é para garantir que os valores calculados não possam ser modificados manualmente.
+
+Se os valores calculados estiverem errados, o usuário terá que verificar os valores dos outros elementos que foram utilizados para fazer o cálculo.
+
+As regras são definidas previamente pelo usuário no modelo de formulário. Cada regra terá sua própria folha no arquivo `.xls` e o nome dessa planilha deve ser o seguinte:
+
+    _ruleX_description_
+
+Onde _X_ é um valor numérico que indica o _rule_id_, e   _description_ é uma breve descrição do elemento a ser calculado. Por exemplo, _rule1_mean_temp_ refere-se à primeira regra (Regra N ° 1 ), que é definida para calcular a temperatura média (_mean temperature_).
+
+Atualmente, existem três tipos diferentes de regras disponíveis:
+
+* _mean_: calcula o valor médio de dois elementos (Figura 8)
+    
+    ```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "form_rule_mean.png"))
+```
+<center>Figura 8. Cálculo da Temperatura Média com base nas temperaturas mínima e máxima</center><br>
+
+* _diff_: Calcula a diferença entre dois elementos (Figura 9)
+
+    ```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "form_rule_diff.png"))
+```
+<center>Figura 9. Cálculo da diferença de velocidade do vento entre a velocidade do vento às 17 UTC e 06 UTC. </center><br>
+
+* _between_: Dado um valor, ele será verificado em uma tabela (chamada  `between_table`) para saber se o valor está entre um certo intervalo de valores. Se assim for, o valor calculado final será um valor definido nessa tabela. A tabela `between_table` deve conter os valores mínimo (`min`) e máximo (`max`) de cada intervalo, e outra coluna com o valor equivalente que será usado como `valor calculado` no final. A Figura 10 mostra um exemplo desta regra
+    
+    ```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "form_rule_between.png"))
+``` 
+<center>Figura 10. Cálculo da velocidade média do vento 24h  (`24Hr. WIND Mean`) com base no elemento de diferença de vento (`24Hr. Wind Diff`) </center><br>
+
+Em todos os casos, as folhas `rule` devem conter, pelo menos, as seguintes informações:
+
+* _rule_id_:  número da regra. O número deve ser exclusivo e deve corresponder ao número usado na folha `element` na coluna `rule` para definir o elemento de interesse
+* _element_name_: Abreviação do elemento que quer ser calculado. Ele deve combinar a abreviatura usada na  folha `element`.
+* _formula_: Tipo de fórmula utilizada para fazer o cálculo (`mean`, `diff`, ou `between`)

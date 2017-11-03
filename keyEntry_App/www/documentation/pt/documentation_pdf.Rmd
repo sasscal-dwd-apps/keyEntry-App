@@ -1,0 +1,89 @@
+---
+title: "Entrada de dados (KeyEntry App)"
+subtitle: "Versão 1.0.1"
+author: "Rafael Posada"
+date: "17 Outubro 2017"
+header-includes:
+  \renewcommand{\contentsname}{Índice}
+output:
+  pdf_document:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align="center")
+options(warn = -1, message = F)
+suppressMessages(library(shiny))
+fig.path <- file.path("figures")
+source("../functions/pkgs.required.R")
+pkgs <- pkgs.required()
+pkgs2 <- data.frame(Nr = c(1:length(pkgs[[1]])), packs = pkgs[[1]])
+abbr <- "pt"
+language <- "portuguese"
+
+# Directory where Rpkgs are to be found
+RpkgsDir <- file.path("keyEntry_standalone", "keyEntry_App", "www", "R_pkgs", "win.binary") 
+# Directory where R libraries are to be found
+RlibsDir <- file.path("keyEntry_standalone", "keyEntry_App", "www", "libraries")
+
+# Rversion
+rversion_prev <- R.Version()
+rversion <- paste0(rversion_prev$major, ".", rversion_prev$minor)
+```
+
+<!-- Set up "columns" section -->  
+<style>
+  .col2 {
+    columns: 2 200px;         /* number of columns and width in pixels*/
+    -webkit-columns: 2 200px; /* chrome, safari */
+    -moz-columns: 2 200px;    /* firefox */
+  }
+  .col3 {
+    columns: 3 100px;
+    -webkit-columns: 3 100px;
+    -moz-columns: 3 100px;
+  }
+   .col4 {
+    columns: 4 80px;
+    -webkit-columns: 4 80px;
+    -moz-columns: 4 80px;
+  }
+</style>
+
+\pagebreak
+
+```{r child = 'introduction.Rmd'}
+```
+
+```{r child = 'requirements.Rmd'}
+```
+
+```{r child = 'installation.Rmd'}
+```
+
+```{r child = 'run.Rmd'}
+```
+
+```{r child = 'key_entry.Rmd'}
+```
+
+```{r child = 'edit_limits.Rmd'}
+```
+
+```{r child = 'form_template.Rmd'}
+```
+
+```{r child = 'create_new_template.Rmd'}
+```
+
+```{r child = 'references.Rmd'}
+```
+

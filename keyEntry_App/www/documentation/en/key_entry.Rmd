@@ -1,0 +1,45 @@
+<a name="keyEntry"></a>
+
+# Key Entry
+
+The Key Entry tab contains a table in which the user can actually enter the data (see Figure 3). The structure of this table is defined previously in an Excel file, but it is based on the structure of the original on-paper form (see Section ['Form Template'](#create_new_template) for more details).
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "form_example.png"))
+```
+<center>Figure 3. Example of a Key Entry Form</center><br>
+
+<a name="save_data"></a>
+
+## Save the data
+The data entered are saved automatically everytime the user enters a new value. This ensures that the data will not be lost if, e.g. the user closes the browser accidentally, or if the computer shuts down unexpectedly.
+
+Alternatively, the user can save the data manually by pressing the button `Save data`. Then an Excel File (`.xls`) with the data will be created and saved in the following path:
+
+```{r, echo = FALSE}
+cat(file.path("keyEntry_standalone", "keyEntry_App", "www", "tmp_files"))
+```
+
+The information contained in the `.xls` file is splitted in four Worksheets:
+
+* **metadata:** containing the information related to the metadata, such as station id, form name, contact person or date when file was created
+* **data:** containing the data entered by the user
+* **limits:** containing the limits applied to the form and the scale factor of each element that is available in the form 
+* **climsoft:** containing information related to CLIMSOFT (i.e. element abbreviation, units, time period, element code, etc.). **This worksheet is essentiasl to later import the data into CLIMSOFT successfully**  
+
+> _**Note:** It is recommended that the user presses the `Save data` button after one form is completed._
+
+## Download the data
+
+To download the data entered, the user has two options:
+
+* Download as `.csv`: The user will get the data in a comma separated file. It will only get the data. Metadata and limits are ignored. 
+* Download as `.xls`: The user will get the metadata, data and limits in an Excel file. The structure of this file is the same as the one described above (see ['Save data'](#save_data))
+
+## Send the data per E-Mail
+
+The user can also send the data per E-Mail. If the user selects this option by pressing the button `Send data per E-Mail`, a new window will pop-up. The new window expects the user to select one E-Mail account from which the data can be sent, and another E-Mail account to which send the E-mail. The password of the sender is necessary to send the data successfully.
+
+The E-Mail will be then generated automatically and will contain the data in two forms: as a `.csv` file and as a `.xls` file.
+
+> _**Note:** The E-Mail address of the sender has to be a **GMAIL-Account**. This account has to be set up to allow '_less secure apps to access the account_' (see <https://support.google.com/accounts/answer/6010255?hl=en> for more details)_

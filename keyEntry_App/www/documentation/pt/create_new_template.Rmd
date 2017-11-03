@@ -1,0 +1,49 @@
+<a name="create_new_template"></a>
+
+# Criar novo modelo de formulário
+O usuário também pode criar um novo modelo completo. Recomenda-se, no entanto, que o usuário aproveite os formulários já existentes para criar seus próprios modelos. Portanto, a recomendação é copiar um formulário antigo e modificá-lo.
+
+Os formulários atualmente disponíveis são organizados por serviço meteorológico e período de tempo. Os modelos de formulário atualmente disponíveis são:
+
+```{r, echo = FALSE}
+formsPath <- file.path("keyEntry_standalone", "keyEntry_App", "www","forms")
+formsPath1 <- normalizePath(file.path("..", "..", "forms"))
+metServices <- list.files(formsPath1)
+timePeriods <- unique(sapply(1:length(metServices), function(i){
+  timePeriods <- list.files(file.path(formsPath1, metServices[i]))
+})
+)
+
+df <- data.frame(matrix(NA, nrow = length(timePeriods), ncol = length(metServices)))
+
+colnames(df) <- metServices
+rownames(df) <- timePeriods
+
+fileNames <- list.files(formsPath1, recursive = T)
+matrix.new <- sapply(1:length(metServices), function(i){
+  fileNames1 <- grep(metServices[i], fileNames)
+  sapply(1:length(timePeriods), function(i2){
+    fileNames2 <- grep(timePeriods[i2], fileNames[fileNames1])
+    if (length(fileNames2)==0){
+      values <- ""
+    }else{
+      values <- paste0(basename(fileNames[fileNames1]), collapse = ", ")
+    }
+  })
+})
+
+df.new <- as.data.frame(matrix.new)
+colnames(df.new) <- metServices
+rownames(df.new) <- timePeriods
+library(knitr)
+kable(df.new,align = "c")
+
+```
+
+e estão localizados na pasta:
+
+```{r, echo = FALSE}
+cat(formsPath)
+```
+
+Uma vez que o novo modelo foi criado, ele estará automaticamente disponível no `keyEntry_App`.

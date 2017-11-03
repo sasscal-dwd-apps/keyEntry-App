@@ -1,0 +1,8 @@
+# Introdução
+O Aplicativo de *Entrada de Dados* (keyEntry-App) foi desenvolvido no âmbito da iniciativa SASSCAL (<http://www.sasscal.org>) através da tarefa climática *Gerenciamento de dados climáticos historicos e actuais*  para facilitar a entrada de dados climáticos nos serviços meteorológicos de Angola, Botswana E Zâmbia.
+
+O aplicativo fornece ao usuário uma interface baseada na web para inserir os dados da mesma maneira que eles estão no formulário em papel. O usuário também pode personalizar a estrutura dos formulários e criar seus próprios modelos. Inclui um controle de qualidade in-situ com base em limites absolutos, de modo que o usuário esteja ciente se um valor inserido estiver fora dos limites.
+
+A ferramenta foi desenvolvida sob Shiny, um pacote de código aberto R que fornece uma estrutura web para a construção de aplicativos da web usando R (<https://shiny.rstudio.com/>). Shiny ajuda a transformar as análises de dados em aplicações web interativas sem requerer conhecimento em HTML, CSS ou JavaScript ([RStudio, 2017](#references))
+
+Este manual dará uma visão geral do aplicativo, explicando como instalá-lo, como executá-lo e como usá-lo.

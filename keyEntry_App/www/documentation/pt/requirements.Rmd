@@ -1,0 +1,49 @@
+# Requisitos
+
+## Requisitos de software
+O seguinte software é necessários para a instalação do aplicativo:
+
+* Windows 7 ou superior
+* Java SE Runtime Environment 7 ou superior (<http://www.oracle.com/technetwork/java/javase/downloads/index.html>)
+* R v3.2.1 ou superior (<https://cran.r-project.org/bin/windows/base/>)
+* RStudio v0.99.467 ou superior (<https://www.rstudio.com/products/rstudio/download/>)
+* Rtools v.3.2 ou superior (<https://cran.r-project.org/bin/windows/Rtools/>)
+* Um navegador da Web, como Mozilla-Firefox, Chrome ou Internet Explorer (v.11 ou superior)
+
+Além deste software, pare que o aplicativo seja totalmente operacional também exige programas adicionais:
+
+* Pandoc (<http://pandoc.org/>): um conversor de documento universal. Será necessário para criar os arquivos de ajuda.
+
+Se este programa não estiver disponível no *localhost*, o aplicativo irá instalá-lo automaticamente. A tabela a seguir mostra a versão padrão que o aplicativo irá instalar, asi como os links para o arquivo de download. O usuário pode instalar uma versão posterior do software a qualquer momento.
+
+| Programa      | Versão padrão   | Link para baixar o programa                         |
+| ------------- |:----------------| ----------------------------------------------------|
+| Pandoc        | 1.19.2.1        | <http://pandoc.org/installing.html>                 |
+
+## Pacotes do R
+O pacote é a unidade fundamental do código compartilhável em R. Um pacote agrupa código, dados, documentação, etc. e é fácil de compartilhar com os outros [Wickham, 2017](#references).
+
+O aplicativo `keyEntry` requer uma série de pacotes R para serem executados corretamente. A maioria deles está disponível on-line e será instalada automaticamente pela aplicação. Esses pacotes são:
+
+<div class = "row">
+<div class = "col-md-4">
+```{r,  warning = FALSE, echo = FALSE}
+cat(paste0(pkgs[[1]][1:3], collapse = "\n"))
+```
+</div>
+<div class = "col-md-4">
+```{r, warning = FALSE, echo=FALSE}
+cat(paste0(pkgs[[1]][4:6], collapse = "\n"))
+```
+</div>
+<div class = "col-md-4">
+```{r,  warning = FALSE, echo = FALSE}
+cat(paste0(pkgs[[1]][7:length(pkgs[[1]])], collapse = "\n"))
+```
+</div>
+</div>
+
+Os pacotes são salvos no seguinte caminho:
+```{r, echo=FALSE}
+cat(RpkgsDir)
+```
